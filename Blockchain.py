@@ -1,5 +1,6 @@
 import hashlib
 import json
+
 from time import time
 from uuid import uuid4
 
@@ -35,26 +36,27 @@ class Blockchain(object):
 	self.chain.append(block)
 	return block
 
+	def new_transaction(self, sender, recipient, amount):
+		"""
+        Creates a new transaction to go into the next mined Block
 
-	def new_transaction(self):
-		# Adds a new transaction to the list of transactions 
-		'''
-		Creates a new transaction to go into the next mined Block
-
-		:param sender: <str> Address of the sender
-		:param recepient: <str> Address of the Recipient
-		:param amount: <int> Amount
-		:return: <int> The index of the Block that will hold this transaction
-		'''
-
+        :param sender: <str> Address of the Sender
+        :param recipient: <str> Address of the Recipient
+        :param amount: <int> Amount
+        :return: <int> The index of the Block that will hold this transaction
+        """
 		self.current_transactions.append({
 			'sender': sender,
 			'recipient': recipient,
-			'amount' : amount,
+			'amount': amount,
 		})
 
-		return self.last_block['intex'] + 1
+		return self.last_block['index'] + 1
 
+	@property
+	def last_block(self):
+		# Returns the last Block in the chain
+		return self.chain[-1]
 
 	@staticmethod
 	def hash(block):
@@ -69,12 +71,34 @@ class Blockchain(object):
 		block_string = json.dumps(block, sort_keys = True).encode()
 		return hashlib.sha256(block_string).hexdigest()
 
+	def proof_of_work(self, last_proof):
+		'''
 
+		Simple Proof of Work Algorithm:
+		- Find a number 'p' such that hash(pp') contains leading 4 zeros, where p is the previous p'
+		- p is the previous proof, and p' is the new proof
 
-	@property
-	def last_block(self):
-		# Returns the last Block in the chain 
-		pass
+		:param last_proof: <int>
+		:return: <int>
+		'''
 
-	
-	
+		proof = 0
+		while self.valid_proof(last_proof, proof) is False:
+			proof += 1
+
+		return proof
+
+	@staticmethod
+	def valid_proof(last_proof, proof):
+		'''
+
+		Validates the Proof: Does hash(last_proof, proof) contains 4 leading zeros?
+
+		:param last_proof: <int> Previous Proof
+		:param proof: <int> Current Proof
+		:return: <bool> True if correct False if not
+		'''
+
+		guess = f'{last_proof}{proof}'.encode()
+		guess_hash = hashlib.sha256(guess).hexdigest()
+		return guess_hash[:4] == '0000'
