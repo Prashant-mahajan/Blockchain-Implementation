@@ -192,7 +192,11 @@ class Blockchain:
 			self.chain = new_chain
 			return True
 
+<<<<<<< HEAD
 		return False
+=======
+	return False
+>>>>>>> 458c7799dd1b0194c39117cfd96fff2e4cd48329
 
 
 """ ------------------------------- Setting up the Flask ------------------------------- """
@@ -275,12 +279,17 @@ def register_nodes():
 	return jsonify(response), 201
 
 
+<<<<<<< HEAD
 @app.route('/nodes/resolve', methods=['GET'])
+=======
+@app.route('nodes/resolve', methods=['GET'])
+>>>>>>> 458c7799dd1b0194c39117cfd96fff2e4cd48329
 def consensus():
 	replaced = blockchain.resolve_conflicts()
 
 	if replaced:
 		response = {
+<<<<<<< HEAD
 			'message': 'Our chain was replaced',
 			'new_chain': blockchain.chain
 		}
@@ -288,6 +297,15 @@ def consensus():
 		response = {
 			'message': 'Our chain is authoritative',
 			'chain': blockchain.chain
+=======
+			'message' : 'Our chain was replaced',
+			'new_chain' : blockchain.chain
+		}
+	else:
+		response = {
+			'message' : 'Our chain is authorative',
+			'chain' : blockchain.chain
+>>>>>>> 458c7799dd1b0194c39117cfd96fff2e4cd48329
 		}
 
 	return jsonify(response), 200
