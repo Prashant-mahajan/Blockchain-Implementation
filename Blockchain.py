@@ -126,7 +126,7 @@ class Blockchain:
 		block_string = json.dumps(block, sort_keys = True).encode()
 		return hashlib.sha256(block_string).hexdigest()
 
-	def proof_of_work(self, last_proof):
+	def proof_of_work(self, last_block):
 		'''
 
 		Simple Proof of Work Algorithm:
@@ -192,11 +192,7 @@ class Blockchain:
 			self.chain = new_chain
 			return True
 
-<<<<<<< HEAD
 		return False
-=======
-	return False
->>>>>>> 458c7799dd1b0194c39117cfd96fff2e4cd48329
 
 
 """ ------------------------------- Setting up the Flask ------------------------------- """
@@ -214,7 +210,7 @@ blockchain = Blockchain()
 def mine():
 	# We run the proof of work algorithm to get the next proof
 	last_block = blockchain.last_block
-	proof = blockchain.proof_of_work(last_proof)
+	proof = blockchain.proof_of_work(last_block)
 
 	# We must receive a reward for finding the proof.
 	# The sender is '0 to signify that this node has mined a new coin.
@@ -279,17 +275,12 @@ def register_nodes():
 	return jsonify(response), 201
 
 
-<<<<<<< HEAD
 @app.route('/nodes/resolve', methods=['GET'])
-=======
-@app.route('nodes/resolve', methods=['GET'])
->>>>>>> 458c7799dd1b0194c39117cfd96fff2e4cd48329
 def consensus():
 	replaced = blockchain.resolve_conflicts()
 
 	if replaced:
 		response = {
-<<<<<<< HEAD
 			'message': 'Our chain was replaced',
 			'new_chain': blockchain.chain
 		}
@@ -297,21 +288,19 @@ def consensus():
 		response = {
 			'message': 'Our chain is authoritative',
 			'chain': blockchain.chain
-=======
-			'message' : 'Our chain was replaced',
-			'new_chain' : blockchain.chain
-		}
-	else:
-		response = {
-			'message' : 'Our chain is authorative',
-			'chain' : blockchain.chain
->>>>>>> 458c7799dd1b0194c39117cfd96fff2e4cd48329
 		}
 
 	return jsonify(response), 200
 
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port=5000)
+	from argparse import ArgumentParser
+
+	parser = ArgumentParser()
+	parser.add_argument('-p', '--port', default=5000, type=int, help='Port to listen on')
+	args = parser.parse_args()
+	port = args.port
+
+	app.run(host='0.0.0.0', port=port)
 
 
