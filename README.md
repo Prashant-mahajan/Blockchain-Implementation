@@ -1,6 +1,5 @@
 # Blockchain-Implementation
-A simple blockchain using Python to understand basic principles behind any blockchain. 
-
+ 
 ## Installation
 
 1. Make sure [Python 3.6+](https://www.python.org/downloads/) is installed. 
