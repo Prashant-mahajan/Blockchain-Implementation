@@ -31,7 +31,7 @@ Use [Postman](https://www.getpostman.com) to interact with the API
 
 ## Functionalities: 
 
-1. /transaction/new, /mine, /chain, /noedes/register
+1. `/transaction/new, /mine, /chain, /noedes/register`
 2. Implemented Basic Proof of Work 
 3. Implemented Consensus Algorithm 
 
